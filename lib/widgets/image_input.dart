@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
+import 'package:path/path.dart' as path;
 
 class ImageInputWidget extends StatefulWidget {
   @override
@@ -11,13 +14,36 @@ class ImageInputWidget extends StatefulWidget {
 
 class ImageInputWidgetState extends State<ImageInputWidget> {
   File? _storedImage;
+  XFile? image;
+  XFile? photo;
+
+  void _pickImageGallery() async {
+/*     image = await ImagePicker().pickImage(source: ImageSource.gallery) as XFile; */
+    photo = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      maxWidth: 600,
+      maxHeight: 600,
+    ) as XFile;
+
+    if (photo!.path.isNotEmpty) {
+      setState(
+        () {
+          _storedImage = File(photo!.path);
+        },
+      );
+      final appPath = await pathProvider.getApplicationDocumentsDirectory();
+      final fileName = path.basename(_storedImage!.path);
+      print("appPath::" + appPath.path + '/' + fileName);
+      /*await _storedImage!.copy('${appPath.path}/$fileName'); */
+    }
+  }
+
   Widget build(BuildContext contx) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          padding: EdgeInsets.all(10),
           alignment: Alignment.center,
           width: 150,
           height: 130,
@@ -28,9 +54,12 @@ class ImageInputWidgetState extends State<ImageInputWidget> {
             ),
           ),
           child: _storedImage != null
-              ? Image.file(
-                  _storedImage as File,
-                  fit: BoxFit.cover,
+              ? Container(
+                  width: double.infinity,
+                  child: Image.file(
+                    _storedImage as File,
+                    fit: BoxFit.cover,
+                  ),
                 )
               : Text(
                   "No Image Is Selected",
@@ -39,7 +68,9 @@ class ImageInputWidgetState extends State<ImageInputWidget> {
         ),
         Expanded(
           child: TextButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              _pickImageGallery();
+            },
             icon: Icon(Icons.camera),
             label: const Text(
               "Select Image",
