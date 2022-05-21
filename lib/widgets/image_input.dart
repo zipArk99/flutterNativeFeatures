@@ -5,6 +5,10 @@ import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:path/path.dart' as path;
 
 class ImageInputWidget extends StatefulWidget {
+  final Function? passFile;
+
+  ImageInputWidget({required this.passFile});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -34,7 +38,8 @@ class ImageInputWidgetState extends State<ImageInputWidget> {
       final appPath = await pathProvider.getApplicationDocumentsDirectory();
       final fileName = path.basename(_storedImage!.path);
       print("appPath::" + appPath.path + '/' + fileName);
-      /*await _storedImage!.copy('${appPath.path}/$fileName'); */
+      final image = await _storedImage!.copy('${appPath.path}/$fileName');
+      widget.passFile!(image);
     }
   }
 

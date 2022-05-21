@@ -8,11 +8,18 @@ class MyHomePageScreen extends StatelessWidget {
 
   Widget build(BuildContext contx) {
     placeProvider = Provider.of<PlaceProvider>(contx);
-    return ListView.builder(
-      itemBuilder: (contx, int) {
-        return PlaceListWidget();
-      },
-      itemCount: placeProvider.getPlaceList.length,
-    );
+    return placeProvider.getPlaceList.length <= 0
+        ? Center(
+            child: Text("No place yet"),
+          )
+        : ListView.builder(
+            itemBuilder: (shacontx, int) {
+              return PlaceListWidget(
+                image: placeProvider.getPlaceList[int].image,
+                title: placeProvider.getPlaceList[int].placeTitle,
+              );
+            },
+            itemCount: placeProvider.getPlaceList.length,
+          );
   }
 }

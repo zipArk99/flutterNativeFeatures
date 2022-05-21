@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nativefeature/providers/place_provider.dart';
 import 'package:nativefeature/widgets/image_input.dart';
+import 'dart:io';
+
+import 'package:provider/provider.dart';
 
 class AddPlaceWidget extends StatefulWidget {
   static String addPlaceWidgetRoute = '/AddPlaceWidget';
@@ -12,6 +17,21 @@ class AddPlaceWidget extends StatefulWidget {
 
 class AddPlaceWidgetState extends State<AddPlaceWidget> {
   late TextEditingController _titleController;
+  File? _pickedImage;
+
+  void getPlaceImage(File image) {
+    _pickedImage = image;
+  }
+
+  void addPlace() {
+    if (_titleController.text.isEmpty || _pickedImage == null) {
+      return;
+    }
+    Provider.of<PlaceProvider>(context, listen: false)
+        .addPlace(_titleController.text, _pickedImage as File);
+    Navigator.of(context).pop();
+  }
+
   Widget build(BuildContext contx) {
     _titleController = TextEditingController();
     return Scaffold(
@@ -32,7 +52,9 @@ class AddPlaceWidgetState extends State<AddPlaceWidget> {
               SizedBox(
                 height: 70,
               ),
-              ImageInputWidget(),
+              ImageInputWidget(
+                passFile: getPlaceImage,
+              ),
             ],
           ),
         ),
@@ -46,7 +68,9 @@ class AddPlaceWidgetState extends State<AddPlaceWidget> {
               primary: Colors.amber,
               elevation: 0,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-          onPressed: () {},
+          onPressed: () {
+            addPlace();
+          },
           icon: Icon(Icons.add),
           label: Text("Add Place"),
         ),
