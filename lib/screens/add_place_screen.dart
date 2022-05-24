@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nativefeature/providers/place_provider.dart';
 import 'package:nativefeature/widgets/image_input.dart';
+import 'package:nativefeature/widgets/location_input.dart';
 import 'dart:io';
 
 import 'package:provider/provider.dart';
@@ -10,7 +10,6 @@ class AddPlaceWidget extends StatefulWidget {
   static String addPlaceWidgetRoute = '/AddPlaceWidget';
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return AddPlaceWidgetState();
   }
 }
@@ -55,6 +54,10 @@ class AddPlaceWidgetState extends State<AddPlaceWidget> {
               ImageInputWidget(
                 passFile: getPlaceImage,
               ),
+              SizedBox(
+                height: 50,
+              ),
+              LocationWidget(),
             ],
           ),
         ),

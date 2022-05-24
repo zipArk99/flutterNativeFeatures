@@ -36,7 +36,7 @@ class PlaceListWidget extends StatelessWidget {
                 ),
                 horizontal: -30,
               ),
-              title: transfromOffset(child:title==null? Text("title"): Text(title), horizontal: -50),
+              title: transfromOffset(child:Text(title), horizontal: -50),
               subtitle: transfromOffset(
                 horizontal: -50,
                 child: Text(
