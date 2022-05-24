@@ -26,6 +26,12 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need to get Location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need to get Location</string>
+	<key>UIBackgroundModes</key>
+	<string>location</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

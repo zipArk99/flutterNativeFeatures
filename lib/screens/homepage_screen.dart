@@ -7,12 +7,30 @@ class MyHomePageScreen extends StatelessWidget {
   late PlaceProvider placeProvider;
 
   Widget build(BuildContext contx) {
-    placeProvider = Provider.of<PlaceProvider>(contx);
-    return ListView.builder(
-      itemBuilder: (contx, int) {
-        return PlaceListWidget();
+    print("-----hey------");
+
+    return FutureBuilder(
+      future: Provider.of<PlaceProvider>(contx, listen: false).fetchData(),
+      builder: (contx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+         return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Consumer<PlaceProvider>(
+          builder: (contx, placeProvider, ch) {
+            return ListView.builder(
+              itemBuilder: (contx, int) {
+                return PlaceListWidget(
+                  image: placeProvider.getPlaceList[int].image,
+                  title: placeProvider.getPlaceList[int].placeTitle,
+                );
+              },
+              itemCount: placeProvider.getPlaceList.length,
+            );
+          },
+        );
       },
-      itemCount: placeProvider.getPlaceList.length,
     );
   }
 }
